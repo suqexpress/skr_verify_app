@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class Auth{
-  static Future<dynamic> getLogin({required String phoneNo,required String password, onSuccess,onError})async{
+  static Future<dynamic> getLogin({ String phoneNo, String password, onSuccess,onError})async{
     var dio = Dio();
     String url='https://erp.suqexpress.com/public/api/verificationlogin';
     FormData formData = new FormData.fromMap({
@@ -15,7 +15,7 @@ class Auth{
     ).then(onSuccess,onError: onError);
     return response.status;
   }
-  static Future<dynamic> uploadImage({String? type, var image}) async {
+  static Future<dynamic> uploadImage({String type, var image}) async {
     Dio dio = new Dio();
 
     var url = 'https://suqexpress.com/api/uploadimage';

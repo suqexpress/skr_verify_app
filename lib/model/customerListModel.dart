@@ -1,26 +1,26 @@
 class CustomerListModel {
-  int? id;
-  String? custName;
+  int id;
+  String custName;
   double lat=1;
   double long=1;
-  int? verified;
-  String? custAddress;
-  String? salemanName;
-  String? custPrimNb;
-  String? custPrimNa;
-  String? custCat;
+  int verified;
+  String custAddress;
+  String salemanName;
+  String custPrimNb;
+  String custPrimNa;
+  String custCat;
   double distance=1;
 
   CustomerListModel(
       {this.id,
         this.custName,
-        required this.lat,
-        required this.long,
+         this.lat,
+         this.long,
         this.verified,
         this.custAddress,
         this.salemanName,
         this.custPrimNb,
-        required this.distance
+         this.distance
       });
 
   CustomerListModel.fromJson(Map<String, dynamic> json,double distance) {

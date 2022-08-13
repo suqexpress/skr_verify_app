@@ -1,7 +1,7 @@
 class AddressModel {
-  String? longName;
-  String? shortName;
-  List<String>? types;
+  String longName;
+  String shortName;
+  List<String> types;
 
   AddressModel({this.longName, this.shortName, this.types});
 

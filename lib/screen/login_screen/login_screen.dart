@@ -212,9 +212,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     activeColor: themeColor1.withOpacity(0.8),
                                     checkColor: Colors.white,
                                     value: this.value,
-                                    onChanged: (bool? value) {
+                                    onChanged: (bool value) {
                                       setState(() {
-                                        this.value = value!;
+                                        this.value = value;
                                       });
                                     },
                                   ),

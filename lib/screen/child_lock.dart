@@ -17,7 +17,7 @@ class ChildLock extends StatefulWidget {
 }
 
 class _ChildLockState extends State<ChildLock> {
-  late String todayDate;
+   String todayDate;
   TextEditingController controller=TextEditingController();
 
    @override

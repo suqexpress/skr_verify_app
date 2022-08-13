@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart' as dioo;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geocoder/model.dart';
 import 'package:http_parser/http_parser.dart';
@@ -29,7 +30,7 @@ import 'package:skr_verify_app/screen/login_screen/login_screen.dart';
 import 'package:skr_verify_app/screen/main_screeen/mainScreen.dart';
 
 class EditShopScreen extends StatefulWidget {
-  EditShopScreen({required this.customer});
+  EditShopScreen({ this.customer});
   CustomerListModel customer;
   @override
   State<EditShopScreen> createState() => _EditShopScreenState();
@@ -41,7 +42,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
   String firstCountry = 'Pakistan';
   bool isLoading = false;
   bool visible = false;
-  String? customerCodeText,
+  String customerCodeText,
       shopNameText,
       categoryText,
       ownerNameText,
@@ -71,7 +72,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
       remarks,
       assignAmmount = TextEditingController();
 
-  File? ownerImage,
+  File ownerImage,
       shopStreetImage,
       shopFrontImage,
       shopInternalImage,
@@ -108,7 +109,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
 
   bool _serviceEnabled = false;
   var actualAddress = "Searching....";
-  late Coordinates userLatLng;
+   Coordinates userLatLng;
   void onStart() async {
     loc.Location location = new loc.Location();
     var _location = await location.getLocation();
@@ -129,8 +130,6 @@ class _EditShopScreenState extends State<EditShopScreen> {
     var gallery = await Permission.storage.request();
     final File pickedFile = await ImagePicker.pickImage(
       source: source,
-      maxWidth: 512,
-      maxHeight: 512,
     );
     switch (image) {
       case "owner":
@@ -233,7 +232,17 @@ class _EditShopScreenState extends State<EditShopScreen> {
     setLoading(true);
     states.clear();
     states = await OnlineDatabase().getStates(
-        countryId.toString() == "null" ? 1.toString() : countryId.toString());
+        countryId.toString() == "null" ? 1.toString() : countryId.toString()).catchError((e){
+      Fluttertoast.showToast(
+          msg: "Error: "+e.response.data["message"],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black87,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.pop(context);
+    });
     if (person.provId != null) {
       for (var province in states) {
         if (province.id == person.provId) {
@@ -260,7 +269,17 @@ class _EditShopScreenState extends State<EditShopScreen> {
     setLoading(true);
     cities.clear();
     cities = await OnlineDatabase()
-        .getCity(id == null ? 1.toString() : id.toString());
+        .getCity(id == null ? 1.toString() : id.toString()).catchError((e){
+      Fluttertoast.showToast(
+          msg: "Error: "+e.response.data["message"],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black87,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.pop(context);
+    });;
     if (person.cityId != null) {
       for (var city in cities) {
         if (city.id == person.cityId) {
@@ -287,7 +306,17 @@ class _EditShopScreenState extends State<EditShopScreen> {
     setLoading(true);
     areas.clear();
     areas = await OnlineDatabase()
-        .getArea(id == null ? 1.toString() : id.toString());
+        .getArea(id == null ? 1.toString() : id.toString()).catchError((e){
+      Fluttertoast.showToast(
+          msg: "Error: "+e.response.data["message"],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black87,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.pop(context);
+    });
     if (person.areaId != null) {
       for (var area in areas) {
         if (area.id == person.areaId) {
@@ -319,7 +348,17 @@ class _EditShopScreenState extends State<EditShopScreen> {
     setLoading(true);
     markets.clear();
     markets = await OnlineDatabase()
-        .getMarket(id == null ? 1.toString() : id.toString());
+        .getMarket(id == null ? 1.toString() : id.toString()).catchError((e){
+      Fluttertoast.showToast(
+          msg: "Error: "+e.response.data["message"],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black87,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.pop(context);
+    });
     if (person.marketId != null) {
       for (var market in markets) {
         if (market.id == person.marketId) {
@@ -371,7 +410,17 @@ class _EditShopScreenState extends State<EditShopScreen> {
 
   getCategory() async {
     setLoading(true);
-    categories = await OnlineDatabase().getCategory();
+    categories = await OnlineDatabase().getCategory().catchError((e){
+      Fluttertoast.showToast(
+          msg: "Error: "+e.response.data["message"],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black87,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.pop(context);
+    });
     for (var category in categories) {
       if (category.id == person.custcatId) {
         categoryValue = category;
@@ -380,8 +429,13 @@ class _EditShopScreenState extends State<EditShopScreen> {
       print("cat id: ${category.id}");
     }
     if (categoryValue.id == null) {
-      categoryValue.id = 1;
-      categoryValue.name = "select category";
+      categories.add(CategoryModel(
+        id: 1,
+        name: "Select Category",
+      ));
+      setState(() {
+        categoryValue=categories.last;
+      });
     }
     setLoading(false);
   }
@@ -443,7 +497,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
               context: context,
               type: AlertType.error,
               title: "Edit Fail",
-              desc: "Error message: ${e.response!.data["message"]}",
+              desc: "Error message: ${e.response.data["message"]}",
               buttons: [
                 DialogButton(
                   child: Text(
@@ -464,27 +518,27 @@ class _EditShopScreenState extends State<EditShopScreen> {
   Map<String, dynamic> image = new HashMap();
   getImageUrl() async {
     if (shopStreetImage != null) {
-      var tempImage = await dioo.MultipartFile.fromFile(shopStreetImage!.path,
+      var tempImage = await dioo.MultipartFile.fromFile(shopStreetImage.path,
           filename:
-              "${DateTime.now().millisecondsSinceEpoch.toString()}.${shopStreetImage!.path.split('.').last}",
+              "${DateTime.now().millisecondsSinceEpoch.toString()}.${shopStreetImage.path.split('.').last}",
           contentType: new MediaType('image', 'jpg'));
       print(tempImage.filename);
       var response = await Auth.uploadImage(type: 'customer', image: tempImage);
        image['shop_street'] = 'https://suqexpress.com/assets/images/customer/${tempImage.filename}';
     }
     if (shopFrontImage != null) {
-      var tempImage = await dioo.MultipartFile.fromFile(shopFrontImage!.path,
+      var tempImage = await dioo.MultipartFile.fromFile(shopFrontImage.path,
           filename:
-              "${DateTime.now().millisecondsSinceEpoch.toString()}.${shopFrontImage!.path.split('.').last}",
+              "${DateTime.now().millisecondsSinceEpoch.toString()}.${shopFrontImage.path.split('.').last}",
           contentType: new MediaType('image', 'jpg'));
       print(tempImage.filename);
       var response = await Auth.uploadImage(type: 'customer', image: tempImage);
       image['shop_front'] = 'https://suqexpress.com/assets/images/customer/${tempImage.filename}';
     }
     if (shopInternalImage != null) {
-      var tempImage = await dioo.MultipartFile.fromFile(shopInternalImage!.path,
+      var tempImage = await dioo.MultipartFile.fromFile(shopInternalImage.path,
           filename:
-              "${DateTime.now().millisecondsSinceEpoch.toString()}.${shopInternalImage!.path.split('.').last}",
+              "${DateTime.now().millisecondsSinceEpoch.toString()}.${shopInternalImage.path.split('.').last}",
           contentType: new MediaType('image', 'jpg'));
       print(tempImage.filename);
       var response = await Auth.uploadImage(type: 'customer', image: tempImage);
@@ -492,9 +546,9 @@ class _EditShopScreenState extends State<EditShopScreen> {
     }
     if (shopSignBoardImage != null) {
       var tempImage = await dioo.MultipartFile.fromFile(
-          shopSignBoardImage!.path,
+          shopSignBoardImage.path,
           filename:
-              "${DateTime.now().millisecondsSinceEpoch.toString()}.${shopSignBoardImage!.path.split('.').last}",
+              "${DateTime.now().millisecondsSinceEpoch.toString()}.${shopSignBoardImage.path.split('.').last}",
           contentType: new MediaType('image', 'jpg'));
       print(tempImage.filename);
       var response = await Auth.uploadImage(type: 'customer', image: tempImage);
@@ -502,45 +556,45 @@ class _EditShopScreenState extends State<EditShopScreen> {
 
     }
     if (ownerImage != null) {
-      var tempImage = await dioo.MultipartFile.fromFile(ownerImage!.path,
+      var tempImage = await dioo.MultipartFile.fromFile(ownerImage.path,
           filename:
-              "${DateTime.now().millisecondsSinceEpoch.toString()}.${ownerImage!.path.split('.').last}",
+              "${DateTime.now().millisecondsSinceEpoch.toString()}.${ownerImage.path.split('.').last}",
           contentType: new MediaType('image', 'jpg'));
       print(tempImage.filename);
       var response = await Auth.uploadImage(type: 'customer', image: tempImage);
       image['owner'] = 'https://suqexpress.com/assets/images/customer/${tempImage.filename}';
     }
     if (cincFrontImage != null) {
-      var tempImage = await dioo.MultipartFile.fromFile(cincFrontImage!.path,
+      var tempImage = await dioo.MultipartFile.fromFile(cincFrontImage.path,
           filename:
-              "${DateTime.now().millisecondsSinceEpoch.toString()}.${cincFrontImage!.path.split('.').last}",
+              "${DateTime.now().millisecondsSinceEpoch.toString()}.${cincFrontImage.path.split('.').last}",
           contentType: new MediaType('image', 'jpg'));
       print(tempImage.filename);
       var response = await Auth.uploadImage(type: 'customer', image: tempImage);
       image['cnic_front'] = 'https://suqexpress.com/assets/images/customer/${tempImage.filename}';
     }
     if (cnicBackImage != null) {
-      var tempImage = await dioo.MultipartFile.fromFile(cnicBackImage!.path,
+      var tempImage = await dioo.MultipartFile.fromFile(cnicBackImage.path,
           filename:
-              "${DateTime.now().millisecondsSinceEpoch.toString()}.${cnicBackImage!.path.split('.').last}",
+              "${DateTime.now().millisecondsSinceEpoch.toString()}.${cnicBackImage.path.split('.').last}",
           contentType: new MediaType('image', 'jpg'));
       print(tempImage.filename);
       var response = await Auth.uploadImage(type: 'customer', image: tempImage);
       image['cnic_back'] = 'https://suqexpress.com/assets/images/customer/${tempImage.filename}';
     }
     if (secondPersonImage != null) {
-      var tempImage = await dioo.MultipartFile.fromFile(secondPersonImage!.path,
+      var tempImage = await dioo.MultipartFile.fromFile(secondPersonImage.path,
           filename:
-              "${DateTime.now().millisecondsSinceEpoch.toString()}.${secondPersonImage!.path.split('.').last}",
+              "${DateTime.now().millisecondsSinceEpoch.toString()}.${secondPersonImage.path.split('.').last}",
           contentType: new MediaType('image', 'jpg'));
       print(tempImage.filename);
       var response = await Auth.uploadImage(type: 'customer', image: tempImage);
       image['person_1'] = 'https://suqexpress.com/assets/images/customer/${tempImage.filename}';
     }
     if (thirdPersonImage != null) {
-      var tempImage = await dioo.MultipartFile.fromFile(thirdPersonImage!.path,
+      var tempImage = await dioo.MultipartFile.fromFile(thirdPersonImage.path,
           filename:
-              "${DateTime.now().millisecondsSinceEpoch.toString()}.${thirdPersonImage!.path.split('.').last}",
+              "${DateTime.now().millisecondsSinceEpoch.toString()}.${thirdPersonImage.path.split('.').last}",
           contentType: new MediaType('image', 'jpg'));
       print(tempImage.filename);
       var response = await Auth.uploadImage(type: 'customer', image: tempImage);
@@ -553,7 +607,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
     person =
         CustomerModel.fromJson(value.data["data"], widget.customer.distance);
     customerCode = TextEditingController(text: person.custOldCode.toString());
-    shopName = TextEditingController(text: person.userData!.firstName);
+    shopName = TextEditingController(text: person.userData.firstName);
     category = TextEditingController(text: person.custcatId.toString());
     ownerName = TextEditingController(text: person.custPrimName.toString());
     ownerNo = TextEditingController(text: person.custPrimNb.toString());
@@ -566,9 +620,9 @@ class _EditShopScreenState extends State<EditShopScreen> {
     phoneNo2 = TextEditingController(text: person.phone2.toString());
     phoneNo3 = TextEditingController(text: person.phone3.toString());
     marketsController = TextEditingController(text: person.marketId.toString());
-    remarks = TextEditingController(text: person.userData!.remarks);
+    remarks = TextEditingController(text: person.remarks);
     assignAmmount =
-        TextEditingController(text: person.userData!.amount.toString());
+        TextEditingController(text: person.custMaxCredit.toString());
   }
 
   @override
@@ -795,8 +849,9 @@ class _EditShopScreenState extends State<EditShopScreen> {
 
                               DividerWithTextWidget(text: "Customer"),
                               EditTextField(
+                                enable: false,
                                 label: "Customer Code",
-                                hintText: customerCode.text,
+                                hintText: customerCode.text.toString(),
                                 onChange: (value) {
                                   if (value.toString().length > 0) {
                                     details["cust_old_code"] = value;
@@ -812,9 +867,9 @@ class _EditShopScreenState extends State<EditShopScreen> {
                                 hintText: shopName.text,
                                 onChange: (value) {
                                   if (value.toString().length > 0) {
-                                    details["first_name"] = value;
+                                    details["cust_name"] = value;
                                   } else {
-                                    details.remove("first_name");
+                                    details.remove("cust_name");
                                   }
                                 },
                                 controller: shopName,
@@ -829,7 +884,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
                                 text: "catName",
                                 onChange: (category) async {
                                   setState(() {
-                                    categoryValue = category!;
+                                    categoryValue = category;
                                   });
                                   if (categoryValue.id == person.custcatId) {
                                     details.remove("custcat_id");
@@ -927,7 +982,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
                                 onChange: (country) async {
                                   setState(
                                     () {
-                                      countryValue = country!;
+                                      countryValue = country;
                                     },
                                   );
                                   if (countryValue.id == person.countryId) {
@@ -948,8 +1003,11 @@ class _EditShopScreenState extends State<EditShopScreen> {
                                 text: "name",
                                 value: stateValue,
                                 onChange: (state) async {
+                                  person.cityId=null;
+                                  person.areaId=null;
+                                  person.marketId=null;
                                   setState(() {
-                                    stateValue = state!;
+                                    stateValue = state;
                                   });
                                   if (stateValue.id == person.provId) {
                                     details.remove("prov_id");
@@ -970,8 +1028,10 @@ class _EditShopScreenState extends State<EditShopScreen> {
                                 text: "name",
                                 value: cityValue,
                                 onChange: (city) async {
+                                  person.areaId=null;
+                                  person.marketId=null;
                                   setState(() {
-                                    cityValue = city!;
+                                    cityValue = city;
                                   });
                                   if (cityValue.id == person.cityId) {
                                     details.remove("city_id");
@@ -992,6 +1052,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
                                 value: areaValue,
                                 text: "name",
                                 onChange: (area) async {
+                                  person.marketId=null;
                                   setState(() {
                                     areaValue = area;
                                   });
@@ -1019,7 +1080,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
                                       value: marketValue,
                                       onChange: (market) async {
                                         setState(() {
-                                          marketValue = market!;
+                                          marketValue = market;
                                         });
                                         if (marketValue.id == person.marketId) {
                                           details.remove("market_id");
@@ -1069,7 +1130,7 @@ class _EditShopScreenState extends State<EditShopScreen> {
                                       InkWell(
                                         onTap: () {
                                           getMarketList(marketsController.text,
-                                              areaValue.id!.toInt());
+                                              areaValue.id.toInt());
                                           marketsController.clear();
                                         },
                                         child: Container(
@@ -1201,9 +1262,9 @@ class _EditShopScreenState extends State<EditShopScreen> {
                                 hintText: assignAmmount.text,
                                 onChange: (value) {
                                   if (value.toString().length > 0) {
-                                    details["allowed_limit"] = value;
+                                    details["cust_max_credit"] = value;
                                   } else {
-                                    details.remove("allowed_limit");
+                                    details.remove("cust_max_credit");
                                   }
                                 },
                                 controller: assignAmmount,
@@ -1212,17 +1273,35 @@ class _EditShopScreenState extends State<EditShopScreen> {
                                 height: 10,
                               ),
                               VerifiedButtons(
-                                onVerify: () {
-                                 var id= Provider.of<UserModel>(context,listen: false).data!.user!.id;
+                                inComplete: () {
+                                 var id= Provider.of<UserModel>(context,listen: false).data.user.id;
                                   //printJson();
-                                  postData(1,id!);
+                                  postData(1,id);
                                   // Navigator.push(context, MaterialPageRoute(builder: (context)=>MainScreen()));
                                 },
                                 onUnVerify: () {
-                                  var id= Provider.of<UserModel>(context,listen: false).data!.user!.id;
-                                  postData(2,id!);
+                                  var id= Provider.of<UserModel>(context,listen: false).data.user.id;
+                                  postData(2,id);
                                   // Navigator.push(context, MaterialPageRoute(builder: (context)=>MainScreen()));
                                 },
+                              ),
+                              InkWell(
+                                onTap: (){
+                                  var id= Provider.of<UserModel>(context,listen: false).data.user.id;
+                                  //printJson();
+                                  postData(3,id);
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  decoration: BoxDecoration(
+                                      color: themeColor1, borderRadius: BorderRadius.circular(5)),
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                                  child: Center(
+                                      child: Text(
+                                        "Incomplete",
+                                        style: TextStyle(color: Colors.white, fontSize: 18),
+                                      )),
+                                ),
                               ),
                             ],
                           ),

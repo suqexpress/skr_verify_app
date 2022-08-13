@@ -1,11 +1,11 @@
 class CountryModel {
-  int? id;
-  String? name;
-  String? countryCode;
-  String? countryNick;
-  String? createdAt;
-  String? updatedAt;
-  String? deletedAt;
+  int id;
+  String name;
+  String countryCode;
+  String countryNick;
+  String createdAt;
+  String updatedAt;
+  String deletedAt;
 
   CountryModel(
       {this.id,

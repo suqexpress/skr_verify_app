@@ -20,7 +20,7 @@ import 'package:skr_verify_app/screen/main_screeen/search_screen.dart';
 import 'package:skr_verify_app/search_field.dart';
 
 class NotFoundShopScreen extends StatefulWidget {
-  const NotFoundShopScreen({Key? key}) : super(key: key);
+  const NotFoundShopScreen({Key key}) : super(key: key);
 
   @override
   State<NotFoundShopScreen> createState() => _NotFoundShopScreenState();
@@ -38,7 +38,7 @@ class _NotFoundShopScreenState extends State<NotFoundShopScreen> {
       loading=value;
     });
   }
-  late Coordinates userLatLng;
+   Coordinates userLatLng;
   getLocation()async{
     String actualAddress="Searching";
     var data =await Location().getLocation();
@@ -57,7 +57,7 @@ class _NotFoundShopScreenState extends State<NotFoundShopScreen> {
         for(var i in address){
           addressList.add(AddressModel.fromJson(i));
         }
-        actualAddress=addressList[3].shortName!;
+        actualAddress=addressList[3].shortName;
         Provider.of<ProviderModel>(context,listen: false).updateAddress(actualAddress);
         print("response ==== $_formattedAddress");
         _formattedAddress;
@@ -67,6 +67,7 @@ class _NotFoundShopScreenState extends State<NotFoundShopScreen> {
   getCustomer()async{
     List<CustomerListModel>customer=[];
     Provider.of<ProviderModel>(context,listen: false).setLoading(true);
+    setState(() {});
     var dio = Dio();
     Response response= await dio.get("https://erp.suqexpress.com/api/listcustomers").catchError((e){setLoading(false);
     Provider.of<ProviderModel>(context,listen: false).setLoading(false);
@@ -217,7 +218,7 @@ class _NotFoundShopScreenState extends State<NotFoundShopScreen> {
   }
 }
 class CustomShopContainerLoading extends StatefulWidget {
-  double? height, width;
+  double height, width;
 
   CustomShopContainerLoading({
     this.height,
@@ -248,37 +249,37 @@ class _CustomShopContainerLoadingState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: widget.height! * 0.0055,
+                      height: widget.height * 0.0055,
                     ),
                     Container(
-                      height: widget.height! * 0.025,
-                      width: widget.width! * 0.5,
+                      height: widget.height * 0.025,
+                      width: widget.width * 0.5,
                       color: Colors.red,
                     ),
                     SizedBox(
-                      height: widget.height! * 0.0075,
+                      height: widget.height * 0.0075,
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          height: widget.height! * 0.025,
-                          width: widget.width! * 0.05,
+                          height: widget.height * 0.025,
+                          width: widget.width * 0.05,
                           color: Colors.red,
                         ),
                         SizedBox(
-                          width: widget.height! * 0.01,
+                          width: widget.height * 0.01,
                         ),
                         Container(
-                          height: widget.height! * 0.025,
-                          width: widget.width! * 0.3,
+                          height: widget.height * 0.025,
+                          width: widget.width * 0.3,
                           color: Colors.red,
                         ),
                       ],
                     ),
                     SizedBox(
-                      height: widget.height! * 0.008,
+                      height: widget.height * 0.008,
                     ),
                     Padding(
                       padding: EdgeInsets.only(right: 0.0),
@@ -288,7 +289,7 @@ class _CustomShopContainerLoadingState
                       ),
                     ),
                     SizedBox(
-                      height: widget.height! * 0.008,
+                      height: widget.height * 0.008,
                     ),
                     Row(
                       children: [
@@ -302,38 +303,38 @@ class _CustomShopContainerLoadingState
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Container(
-                                    height: widget.height! * 0.025,
-                                    width: widget.width! * 0.05,
+                                    height: widget.height * 0.025,
+                                    width: widget.width * 0.05,
                                     color: Colors.red,
                                   ),
                                   SizedBox(
-                                    width: widget.height! * 0.01,
+                                    width: widget.height * 0.01,
                                   ),
                                   Container(
-                                    height: widget.height! * 0.025,
-                                    width: widget.width! * 0.2,
+                                    height: widget.height * 0.025,
+                                    width: widget.width * 0.2,
                                     color: Colors.red,
                                   ),
                                 ],
                               ),
                               SizedBox(
-                                height: widget.height! * 0.01,
+                                height: widget.height * 0.01,
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Container(
-                                    height: widget.height! * 0.025,
-                                    width: widget.width! * 0.05,
+                                    height: widget.height * 0.025,
+                                    width: widget.width * 0.05,
                                     color: Colors.red,
                                   ),
                                   SizedBox(
-                                    width: widget.height! * 0.01,
+                                    width: widget.height * 0.01,
                                   ),
                                   Container(
-                                    height: widget.height! * 0.025,
-                                    width: widget.width! * 0.2,
+                                    height: widget.height * 0.025,
+                                    width: widget.width * 0.2,
                                     color: Colors.red,
                                   ),
                                 ],
@@ -347,8 +348,8 @@ class _CustomShopContainerLoadingState
                           child: Padding(
                             padding: const EdgeInsets.only(top: 12.0, right: 8),
                             child: Container(
-                              height: widget.height! * 0.035,
-                              width: widget.width! * 0.22,
+                              height: widget.height * 0.035,
+                              width: widget.width * 0.22,
                               decoration: BoxDecoration(
                                   color: themeColor1 /*:Color(0xff1F92F6)*/,
                                   borderRadius: BorderRadius.circular(5)),

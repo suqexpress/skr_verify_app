@@ -1,10 +1,10 @@
 class CityModel {
-  int? id;
-  String? name;
-  int? provinceId;
-  String? createdAt;
-  String? updatedAt;
-  String? deletedAt;
+  int id;
+  String name;
+  int provinceId;
+  String createdAt;
+  String updatedAt;
+  String deletedAt;
 
   CityModel(
       {this.id,

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
 class UserModel extends ChangeNotifier{
-  bool? success;
-  Data? data;
-  String? message;
+  bool success;
+  Data data;
+  String message;
 
   UserModel();
   fromJson(Map<String, dynamic> json) {
@@ -17,7 +17,7 @@ class UserModel extends ChangeNotifier{
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
     if (this.data != null) {
-      data['data'] = this.data!.toJson();
+      data['data'] = this.data.toJson();
     }
     data['message'] = this.message;
     return data;
@@ -25,8 +25,8 @@ class UserModel extends ChangeNotifier{
 }
 
 class Data {
-  String? token;
-  User? user;
+  String token;
+  User user;
 
   Data({this.token, this.user});
 
@@ -39,24 +39,24 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['token'] = this.token;
     if (this.user != null) {
-      data['user'] = this.user!.toJson();
+      data['user'] = this.user.toJson();
     }
     return data;
   }
 }
 
 class User {
-  int? id;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? phone;
-  String? image;
-  int? isActive;
-  int? appLogin;
-  int? webLogin;
-  String? createdAt;
-  String? updatedAt;
+  int id;
+  String firstName;
+  String lastName;
+  String email;
+  String phone;
+  String image;
+  int isActive;
+  int appLogin;
+  int webLogin;
+  String createdAt;
+  String updatedAt;
 
   User(
       {this.id,

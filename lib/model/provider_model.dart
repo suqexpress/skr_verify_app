@@ -4,6 +4,7 @@ import 'package:skr_verify_app/model/customerListModel.dart';
 class ProviderModel extends ChangeNotifier{
   List<CustomerListModel> verified=[];
   List<CustomerListModel> unverified=[];
+  List<CustomerListModel> incomplete=[];
   List<CustomerListModel> notFound=[];
   String actualAddress="Searching...";
   bool isLoading =false;
@@ -22,6 +23,15 @@ class ProviderModel extends ChangeNotifier{
     for(var i in value) {
       if(i.verified==0) {
         unverified.add(i);
+      }
+    }
+    notifyListeners();
+  }
+  getIncomplete(List<CustomerListModel> value){
+    incomplete.clear();
+    for(var i in value) {
+      if(i.verified==3) {
+        incomplete.add(i);
       }
     }
     notifyListeners();

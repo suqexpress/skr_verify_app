@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:skr_verify_app/model/AreaModel.dart';
 import 'package:skr_verify_app/model/categoryModel.dart';
 import 'package:skr_verify_app/model/cityModel.dart';
@@ -13,7 +14,16 @@ class OnlineDatabase{
   Future<List<CategoryModel>> getCategory()async{
         var dio = Dio();
     List<CategoryModel>categories=[];
-    var response = await dio.get("https://erp.suqexpress.com/api/customercategory");
+    var response = await dio.get("https://erp.suqexpress.com/api/customercategory").catchError((e){
+      Fluttertoast.showToast(
+          msg: "Error: "+e.response.data["message"],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black87,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    });
     for (var category in response.data['data']) {
       categories.add(CategoryModel.fromJson(category));
     }

@@ -1,14 +1,12 @@
 import 'dart:convert';
-
+import 'package:http/http.dart'as http;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 import 'package:skr_verify_app/model/addressModel.dart';
 import 'package:skr_verify_app/model/customerListModel.dart';
@@ -18,14 +16,14 @@ import 'package:skr_verify_app/others/widgets.dart';
 import 'package:skr_verify_app/screen/main_screeen/search_screen.dart';
 import 'package:skr_verify_app/search_field.dart';
 
-class UnVerifiedShopScreen extends StatefulWidget {
-  const UnVerifiedShopScreen({Key key}) : super(key: key);
+class IncompleteShopScreen extends StatefulWidget {
+  const IncompleteShopScreen({Key key}) : super(key: key);
 
   @override
-  State<UnVerifiedShopScreen> createState() => _UnVerifiedShopScreenState();
+  State<IncompleteShopScreen> createState() => _IncompleteShopScreenState();
 }
 
-class _UnVerifiedShopScreenState extends State<UnVerifiedShopScreen> {
+class _IncompleteShopScreenState extends State<IncompleteShopScreen> {
   //List<CustomerListModel> customer=[];
   bool loading=false;
   bool isLoading=false;
@@ -37,7 +35,7 @@ class _UnVerifiedShopScreenState extends State<UnVerifiedShopScreen> {
       loading=value;
     });
   }
-   Coordinates userLatLng;
+  Coordinates userLatLng;
   getLocation()async{
     String actualAddress="Searching";
     var data =await Location().getLocation();
@@ -66,8 +64,8 @@ class _UnVerifiedShopScreenState extends State<UnVerifiedShopScreen> {
   getCustomer()async{
     List<CustomerListModel>customer=[];
     Provider.of<ProviderModel>(context,listen: false).setLoading(true);
-    var dio = Dio();
     setState(() {});
+    var dio = Dio();
     Response response= await dio.get("https://erp.suqexpress.com/api/listcustomers").catchError((e){setLoading(false);
     Provider.of<ProviderModel>(context,listen: false).setLoading(false);
     });
@@ -100,119 +98,119 @@ class _UnVerifiedShopScreenState extends State<UnVerifiedShopScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    var customer=Provider.of<ProviderModel>(context).unverified;
+    var customer=Provider.of<ProviderModel>(context).incomplete;
     var isLoading=Provider.of<ProviderModel>(context).isLoading;
     var media = MediaQuery.of(context).size;
     double height = media.height;
     var width = media.width;
     return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child:Container(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Column(children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InkWell(
-                        onTap:()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchScreen(customerModel: customer, lat: 1.0, long: 1.0))),
-                        child: Container(
-                            width: width * 0.7,
-                            child: SearchField(enable: false,onTap: (){}))),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 1,horizontal: 5),
-                      decoration: BoxDecoration(
-                        color: themeColor1,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: IconButton(onPressed: (){
-                        getLocation();
-                        getCustomer();
-                      },icon: Icon(Icons.refresh,color: Colors.white,),),),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child:Container(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Column(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      InkWell(
+                          onTap:()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchScreen(customerModel: customer, lat: 1.0, long: 1.0))),
+                          child: Container(
+                              width: width * 0.7,
+                              child: SearchField(enable: false,onTap: (){}))),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 1,horizontal: 5),
+                        decoration: BoxDecoration(
+                          color: themeColor1,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: IconButton(onPressed: (){
+                          getLocation();
+                          getCustomer();
+                        },icon: Icon(Icons.refresh,color: Colors.white,),),),
 
-                  ],
-                ),
-
-                isLoading?Container(
-                  height: 480,
-                  child: Shimmer.fromColors(
-                    period: Duration(seconds: 1),
-                    baseColor: Colors.grey.withOpacity(0.4),
-                    highlightColor: Colors.grey.shade100,
-                    enabled: true,
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 4,
-                      itemBuilder:
-                          (BuildContext context, int index) {
-                        return Column(
-                          children: [
-                            CustomShopContainerLoading(
-                              height: height,
-                              width: width,
-                            ),
-                            SizedBox(
-                              height: height * 0.025,
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                    ],
                   ),
-                ):Container(
-                  width: width,
-                  child:
-                  Container(
-                    padding: EdgeInsets.only(bottom: 60),
-                    child: ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+
+                  isLoading?Container(
+                    height: 480,
+                    child: Shimmer.fromColors(
+                      period: Duration(seconds: 1),
+                      baseColor: Colors.grey.withOpacity(0.4),
+                      highlightColor: Colors.grey.shade100,
+                      enabled: true,
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-
-                        itemCount: customer.length>10?10:customer.length,
-                        itemBuilder:(context,index){
-                          return
-                            CustomerCard(
-                              height: height,
-                              width: width,
-                              f: f,
-                              menuButton: menuButton,
-                              code: customer[index].id,
-                              category: customer[index].custCat,
-                              shopName: customer[index].custName,
-                              address:customer[index].custAddress,
-                              name: customer[index].custPrimNa,
-                              phoneNo: customer[index].custPrimNb,
-                              lastVisit: "--",
-                              dues: "--",
-                              lastTrans:"--",
-                              outstanding: "--",
-                              lat: customer[index].lat,
-                              long: customer[index].long,
-                              customerData: customer[index],
-                              image:
-                              "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.indianexpress.com%2F2021%2F12%2Fdoctor-strange-2-1200.jpg&imgrefurl=https%3A%2F%2Findianexpress.com%2Farticle%2Fentertainment%2Fhollywood%2Fdoctor-strange-2-suggest-benedict-cumberbatch-sorcerer-supreme-might-lead-avengers-7698058%2F&tbnid=GxuE_SM1fXrAqM&vet=12ahUKEwjr4bj575_3AhVMxqQKHSC5BRAQMygBegUIARDbAQ..i&docid=6gb_YRZyTk5MWM&w=1200&h=667&q=dr%20strange&ved=2ahUKEwjr4bj575_3AhVMxqQKHSC5BRAQMygBegUIARDbAQ",
-                              showLoading: (value) {
-                                setState(() {
-                                  isLoading = value;
-                                });
-                              },
-                            );
-                        }
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: 4,
+                        itemBuilder:
+                            (BuildContext context, int index) {
+                          return Column(
+                            children: [
+                              CustomShopContainerLoading(
+                                height: height,
+                                width: width,
+                              ),
+                              SizedBox(
+                                height: height * 0.025,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                )
+                  ):Container(
+                    width: width,
+                    child:
+                    Container(
+                      padding: EdgeInsets.only(bottom: 60),
+                      child: ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
 
-              ],),
+                          itemCount: customer.length>10?10:customer.length,
+                          itemBuilder:(context,index){
+                            return
+                              CustomerCard(
+                                height: height,
+                                width: width,
+                                f: f,
+                                menuButton: menuButton,
+                                code: customer[index].id,
+                                category: customer[index].custCat,
+                                shopName: customer[index].custName,
+                                address:customer[index].custAddress,
+                                name: customer[index].custPrimNa,
+                                phoneNo: customer[index].custPrimNb,
+                                lastVisit: "--",
+                                dues: "--",
+                                lastTrans:"--",
+                                outstanding: "--",
+                                lat: customer[index].lat,
+                                long: customer[index].long,
+                                customerData: customer[index],
+                                image:
+                                "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.indianexpress.com%2F2021%2F12%2Fdoctor-strange-2-1200.jpg&imgrefurl=https%3A%2F%2Findianexpress.com%2Farticle%2Fentertainment%2Fhollywood%2Fdoctor-strange-2-suggest-benedict-cumberbatch-sorcerer-supreme-might-lead-avengers-7698058%2F&tbnid=GxuE_SM1fXrAqM&vet=12ahUKEwjr4bj575_3AhVMxqQKHSC5BRAQMygBegUIARDbAQ..i&docid=6gb_YRZyTk5MWM&w=1200&h=667&q=dr%20strange&ved=2ahUKEwjr4bj575_3AhVMxqQKHSC5BRAQMygBegUIARDbAQ",
+                                showLoading: (value) {
+                                  setState(() {
+                                    isLoading = value;
+                                  });
+                                },
+                              );
+                          }
+                      ),
+                    ),
+                  )
+
+                ],),
+              ),
             ),
-          ),
-          isLoading==false && customer.length<1 ?Center(
-            child: Text("Shop Not Found"),
-          ):Container()
-        ],
-      )
+            isLoading==false && customer.length<1 ?Center(
+              child: Text("Shop Not Found"),
+            ):Container()
+          ],
+        )
     );
   }
 }

@@ -10,14 +10,14 @@ import 'package:skr_verify_app/search_field.dart';
 class SearchScreen extends StatefulWidget {
   List<CustomerListModel> customerModel;
   double lat, long;
-  SearchScreen({required this.customerModel, required this.lat, required this.long});
+  SearchScreen({ this.customerModel,  this.lat,  this.long});
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
   int listLength = 0;
-  late bool _isSearching;
+   bool _isSearching;
   var f = NumberFormat("###,###.0#", "en_US");
   bool isLoading = false;
   List<String> menuButton = ["DIRECTION",'EDIT SHOP'];

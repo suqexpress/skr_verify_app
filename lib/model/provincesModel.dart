@@ -1,10 +1,10 @@
 class ProvincesModel {
-  int? id;
-  String? name;
-  int? countryId;
-  String? createdAt;
-  String? updatedAt;
-  String? deletedAt;
+  int id;
+  String name;
+  int countryId;
+  String createdAt;
+  String updatedAt;
+  String deletedAt;
 
   ProvincesModel(
       {this.id,

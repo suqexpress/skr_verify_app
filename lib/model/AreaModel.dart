@@ -1,10 +1,10 @@
 class AreaModel {
-  int? id;
-  String? name;
-  int? cityId;
-  String? createdAt;
-  String? updatedAt;
-  String? deletedAt;
+  int id;
+  String name;
+  int cityId;
+  String createdAt;
+  String updatedAt;
+  String deletedAt;
 
   AreaModel(
       {this.id,

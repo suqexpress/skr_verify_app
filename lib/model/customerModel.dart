@@ -1,48 +1,49 @@
 class CustomerModel {
-  int? id;
-  String? custRegDate;
-  int? custStatus;
-  int? custEditable;
-  int? custParentCheck;
-  int? custCode;
-  String? custName;
-  String? custOldCode;
-  String? custPrimNb;
-  String? custPrimName;
-  Null? custPrimPass;
-  Null? custPrimApp;
-  String? custAddress;
-  String? cnic;
-  int? countryId;
-  int? provId;
-  int? cityId;
-  int? areaId;
-  String? marketId;
-  int? custcatId;
-  int? custtypeId;
-  int? custclassId;
-  int? custMinCredit;
-  int? custMaxCredit;
-  int? custCreditCheck;
-  int? parentId;
-  Null? warehouseCode;
-  int? addedBy;
-  String? contactPerson2;
-  String? phone2;
-  Null? contactPerson3;
-  Null? phone3;
-  String? cnicExp;
-  double? lat;
-  double? long;
-  int? paymentTerm;
-  String? salemanName;
-  String? cr30Days;
-  String? cr90Days;
-  String? cr180Days;
-  String? ntn;
-  double? balance;
-  UserData? userData;
-  ImageModel? imageModel;
+  int id;
+  String custRegDate;
+  int custStatus;
+  int custEditable;
+  int custParentCheck;
+  int custCode;
+  String custName;
+  String custOldCode;
+  String custPrimNb;
+  String custPrimName;
+  String custPrimPass;
+  String custPrimApp;
+  String custAddress;
+  String cnic;
+  int countryId;
+  int provId;
+  int cityId;
+  int areaId;
+  String marketId;
+  int custcatId;
+  int custtypeId;
+  int custclassId;
+  int custMinCredit;
+  int custMaxCredit;
+  int custCreditCheck;
+  int parentId;
+  int warehouseCode;
+  int addedBy;
+  String contactPerson2;
+  String phone2;
+  String  contactPerson3;
+  String remarks;
+  String phone3;
+  String cnicExp;
+  double lat;
+  double long;
+  int paymentTerm;
+  String salemanName;
+  String cr30Days;
+  String cr90Days;
+  String cr180Days;
+  String ntn;
+  double balance;
+  UserData userData;
+  ImageModel imageModel;
   double distance=0;
 
   CustomerModel(
@@ -78,9 +79,11 @@ class CustomerModel {
         this.phone2,
         this.contactPerson3,
         this.phone3,
+        this.remarks,
         this.cnicExp,
         this.lat,
         this.long,
+
         this.paymentTerm,
         this.salemanName,
         this.cr30Days,
@@ -90,7 +93,7 @@ class CustomerModel {
         this.balance,
         this.userData,
          this.imageModel,
-        required this.distance});
+         this.distance});
 
   CustomerModel.fromJson(Map<String, dynamic> json,double distance) {
     id = json['id'];
@@ -189,29 +192,28 @@ class CustomerModel {
     data['ntn'] = this.ntn;
     data['balance'] = this.balance;
     if (this.userData != null) {
-      data['user_data'] = this.userData!.toJson();
+      data['user_data'] = this.userData.toJson();
     }
     if (this.imageModel != null) {
-      data['images'] = this.imageModel!.toJson();
+      data['images'] = this.imageModel.toJson();
     }
     return data;
   }
 }
 
 class UserData {
-  int? id;
-  String? firstName;
-  String? remarks;
-  int? amount;
-  String? lastName;
-  Null? email;
-  String? phone;
-  Null? image;
-  int? isActive;
-  int? appLogin;
-  int? webLogin;
-  String? createdAt;
-  String? updatedAt;
+  int id;
+  String firstName;
+  int amount;
+  String lastName;
+  String email;
+  String phone;
+  String image;
+  int isActive;
+  int appLogin;
+  int webLogin;
+  String createdAt;
+  String updatedAt;
 
   UserData(
       {this.id,
@@ -220,7 +222,6 @@ class UserData {
         this.email,
         this.phone,
         this.image,
-        this.remarks,
         this.amount,
         this.isActive,
         this.appLogin,
@@ -240,7 +241,6 @@ class UserData {
     webLogin = json['web_login'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    remarks ="Good";
     amount =000;
   }
 
@@ -261,19 +261,19 @@ class UserData {
   }
 }
 class ImageModel {
-  int? id;
-  int? customerId;
-  Null? owner;
-  Null? shopFront;
-  Null? shopInternal;
-  Null? shopSignBoard;
-  Null? shopStreet;
-  Null? person1;
-  Null? person2;
-  Null? cnicFront;
-  Null? cnicBack;
-  String? createdAt;
-  String? updatedAt;
+  int id;
+  int customerId;
+  String owner;
+  String shopFront;
+  String shopInternal;
+  String shopSignBoard;
+  String shopStreet;
+  String person1;
+  String person2;
+  String cnicFront;
+  String cnicBack;
+  String createdAt;
+  String updatedAt;
 
   ImageModel(
       {this.id,

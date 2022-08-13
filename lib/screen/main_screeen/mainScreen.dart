@@ -15,6 +15,7 @@ import 'package:skr_verify_app/model/customerListModel.dart';
 import 'package:skr_verify_app/model/provider_model.dart';
 import 'package:skr_verify_app/model/user_model.dart';
 import 'package:skr_verify_app/others/style.dart';
+import 'package:skr_verify_app/screen/incompleteScreen/incomplete_screeen.dart';
 import 'package:skr_verify_app/screen/notFoundScreen/notFoundScreen.dart';
 import 'package:skr_verify_app/screen/unVerifiedScreen/unVerfiedScreen.dart';
 import 'package:skr_verify_app/screen/verified_customer.dart';
@@ -27,12 +28,12 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late List nearByCustomers=["0","0","0","0","0","0"];
+   List nearByCustomers=["0","0","0","0","0","0"];
   List<String> menuButton = ["DIRECTION",'EDIT SHOP'];
   bool isLoading=true;
   bool _serviceEnabled = false;
   var actualAddress = "Searching....";
-   late Coordinates userLatLng;
+    Coordinates userLatLng;
   List<CustomerListModel> customer=[];
   bool loading=false;
   TextEditingController search=TextEditingController();
@@ -62,7 +63,7 @@ class _MainScreenState extends State<MainScreen> {
         for(var i in address){
           addressList.add(AddressModel.fromJson(i));
         }
-        actualAddress=addressList[3].shortName!;
+        actualAddress=addressList[3].shortName;
         Provider.of<ProviderModel>(context,listen: false).updateAddress(actualAddress);
         print("response ==== $_formattedAddress");
         _formattedAddress;
@@ -90,6 +91,7 @@ class _MainScreenState extends State<MainScreen> {
          customer.sort((a, b) => a.distance.compareTo(b.distance));
       Provider.of<ProviderModel>(context,listen: false).getNotFound(customer);
       Provider.of<ProviderModel>(context,listen: false).getUnVerified(customer);
+      Provider.of<ProviderModel>(context,listen: false).getIncomplete(customer);
       Provider.of<ProviderModel>(context,listen: false).getVerified(customer);
       Provider.of<ProviderModel>(context,listen: false).setLoading(false);
 
@@ -118,7 +120,7 @@ class _MainScreenState extends State<MainScreen> {
     double height = media.height;
     var width = media.width;
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor:themeColor1,
@@ -129,26 +131,33 @@ class _MainScreenState extends State<MainScreen> {
           ],
           bottom: TabBar(
             indicatorColor: Colors.white,
+            isScrollable: true,
             tabs: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("UnVerified",style: TextStyle(color: Colors.white,fontSize: 15),)
+                    Text("UnVerified",style: TextStyle(color: Colors.white,fontSize: 12),)
                   ],
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Verified",style: TextStyle(color: Colors.white,fontSize: 15),)
+                  Text("Verified",style: TextStyle(color: Colors.white,fontSize: 12),)
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Not Found",style: TextStyle(color: Colors.white,fontSize: 15),)
+                  Text("Incomplete",style: TextStyle(color: Colors.white,fontSize: 12),)
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Not Found",style: TextStyle(color: Colors.white,fontSize: 12),)
                 ],
               ),
             ],
@@ -163,11 +172,11 @@ class _MainScreenState extends State<MainScreen> {
                 decoration: BoxDecoration(
                   color: themeColor1,
                 ),
-                accountName: Text(userData.data!.user!.firstName.toString()),
-                accountEmail: Text(userData.data!.user!.phone.toString()),
+                accountName: Text(userData.data.user.firstName.toString()),
+                accountEmail: Text(userData.data.user.phone.toString()),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.orange,
-                  child: Text(userData.data!.user!.firstName.toString().substring(0,1),
+                  child: Text(userData.data.user.firstName.toString().substring(0,1),
                    // userData.firstName.toString().substring(0,1),
                     style: TextStyle(fontSize: 40.0,color: Colors.white),
                   ),
@@ -197,6 +206,7 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             UnVerifiedShopScreen(),
             VerifiedShopsScreen(),
+            IncompleteShopScreen(),
             NotFoundShopScreen(),
           ],
         )

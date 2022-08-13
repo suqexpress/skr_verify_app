@@ -12,7 +12,7 @@ import 'package:skr_verify_app/screen/edit_shop/edit_shop_screen.dart';
 
 class LoginTextField extends StatelessWidget {
   LoginTextField(
-      {required this.width,
+      { this.width,
       this.label,
       this.onchange,
       this.obscureText,
@@ -59,10 +59,10 @@ class LoginTextField extends StatelessWidget {
 
 class CustomerCard extends StatefulWidget {
   CustomerCard({
-    required this.height,
-    required this.width,
-    required this.f,
-    required this.menuButton,
+     this.height,
+     this.width,
+     this.f,
+     this.menuButton,
     this.code,
     this.category,
     this.shopName,
@@ -75,7 +75,7 @@ class CustomerCard extends StatefulWidget {
     this.outstanding,
     this.lat,
     this.long,
-    required this.showLoading,
+     this.showLoading,
     this.image,
     this.customerData,
   });
@@ -589,11 +589,12 @@ class VariableText extends StatelessWidget {
   }
 }
 class EditTextField extends StatelessWidget {
-  EditTextField({this.label,this.hintText,this.controller,this.onChange});
+  EditTextField({this.label,this.hintText,this.controller,this.onChange,this.enable});
   final label;
   final hintText;
   final controller;
   final onChange;
+  final enable;
 
   @override
   Widget build(BuildContext context) {
@@ -609,6 +610,7 @@ class EditTextField extends StatelessWidget {
           Container(
               margin: EdgeInsets.symmetric(vertical: 5),
               child: TextField(
+                enabled:enable.toString()=="null"?true:false,
                 controller: controller,
                 onChanged: onChange,
                 decoration:InputDecoration(
@@ -627,19 +629,19 @@ class EditTextField extends StatelessWidget {
 }
 class ShowDropDown extends StatelessWidget {
   const ShowDropDown({
-    Key? key,
-    required this.height,
-    required this.value,
-    required this.list,
-    required this.onChange,
-     required this.text,
+    Key key,
+     this.height,
+     this.value,
+     this.list,
+     this.onChange,
+      this.text,
   }) : super(key: key);
 
   final double height;
   final  value;
   final List list;
   final String text;
-  final void Function(dynamic)? onChange;
+  final void Function(dynamic) onChange;
 
   @override
   Widget build(BuildContext context) {
@@ -747,8 +749,8 @@ class SaveButton extends StatelessWidget {
 }
 
 class VerifiedButtons extends StatelessWidget {
-  VerifiedButtons({this.onVerify, this.onUnVerify});
-  final onVerify;
+  VerifiedButtons({this.inComplete, this.onUnVerify});
+  final inComplete;
   final onUnVerify;
 
   @override
@@ -758,7 +760,7 @@ class VerifiedButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           InkWell(
-            onTap: onVerify,
+            onTap: inComplete,
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
@@ -793,13 +795,13 @@ class VerifiedButtons extends StatelessWidget {
 
 class VisiableImage extends StatefulWidget {
   VisiableImage({
-    Key? key,
-    required this.loading,
-    required this.image,
+    Key key,
+     this.loading,
+     this.image,
   }) : super(key: key);
 
   var loading = false;
-  File? image;
+  File image;
 
   @override
   _VisiableImageState createState() => _VisiableImageState();
@@ -821,7 +823,7 @@ class _VisiableImageState extends State<VisiableImage> {
           ),
           child: widget.loading
               ? Image.file(
-            File(widget.image!.path),
+            File(widget.image.path),
             fit: BoxFit.fill,
           )
               : Container(),
@@ -895,7 +897,7 @@ class UploadImages extends StatelessWidget {
 
 class DividerWithTextWidget extends StatelessWidget {
   final String text;
-  DividerWithTextWidget({required this.text});
+  DividerWithTextWidget({ this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -917,16 +919,16 @@ class DividerWithTextWidget extends StatelessWidget {
 
 class LocationButton extends StatelessWidget {
   const LocationButton({
-    Key? key,
-    required this.width,
-    required this.customerAddress,
-    required this.onPressed,
-    required this.onChange
+    Key key,
+     this.width,
+     this.customerAddress,
+     this.onPressed,
+     this.onChange
   }) : super(key: key);
 
   final double width;
   final TextEditingController customerAddress;
-  final void Function()? onPressed;
+  final void Function() onPressed;
   final void Function(dynamic) onChange;
 
   @override
@@ -963,18 +965,18 @@ class LocationButton extends StatelessWidget {
 
 class ImageContainer extends StatelessWidget {
   const ImageContainer({
-    Key? key,
-    required this.loading1,
-    required this.shopStreetImage,
-    required this.onLongPress,
-    required this.onGallery,
-    required this.onCamera,
-    required this.title,
+    Key key,
+     this.loading1,
+     this.shopStreetImage,
+     this.onLongPress,
+     this.onGallery,
+     this.onCamera,
+     this.title,
   }) : super(key: key);
 
   final bool loading1;
-  final File? shopStreetImage;
-  final void Function()? onLongPress;
+  final File shopStreetImage;
+  final void Function() onLongPress;
   final  Function onCamera;
   final  Function onGallery;
   final  String title;

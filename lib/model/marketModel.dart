@@ -1,12 +1,12 @@
 class MarketModel {
-  int? id;
-  String? name;
-  int? areaId;
-  int? udCd;
-  String? ucName;
-  String? createdAt;
-  String? updatedAt;
-  String? deletedAt;
+  int id;
+  String name;
+  int areaId;
+  int udCd;
+  String ucName;
+  String createdAt;
+  String updatedAt;
+  String deletedAt;
 
   MarketModel(
       {this.id,
